@@ -11,15 +11,24 @@ const switchButton = document.querySelector(".measure");
 const userInput = document.querySelector("#locationInput");
 let inputtedLocation = "";
 let celcius = true;
+let iconString = "";
+
+function toF(degrees) {
+  return (parseFloat(degrees) * 9) / 5 + 32;
+}
+
+function toC(degrees) {
+  return ((parseFloat(degrees) - 32) * 5) / 9;
+}
 
 function convertTemps() {
   if (celcius) {
-    const f = (parseFloat(temp.textContent) * 9) / 5 + 32;
+    const f = toF(temp.textContent);
     celcius = false;
     temp.textContent = f.toFixed(1) + " F";
     switchButton.textContent = "F->C";
   } else {
-    const c = ((parseFloat(temp.textContent) - 32) * 5) / 9;
+    const c = toC(temp.textContent);
     celcius = true;
     temp.textContent = c.toFixed(1) + " C";
     switchButton.textContent = "C->F";
@@ -48,8 +57,10 @@ function searchWeather(input) {
       temp.textContent = response.currentConditions.temp;
       temp.textContent = celcius
         ? temp.textContent + " C"
-        : temp.textContent + " F";
+        : toF(response.currentConditions.temp) + " F";
       cond.textContent = response.currentConditions.conditions;
+      iconString = response.currentConditions.icon;
+      console.log(iconString);
       getGif(cond.textContent, inputtedLocation);
     })
     .catch((error) => {
@@ -59,8 +70,8 @@ function searchWeather(input) {
     });
 }
 
-function getGif(condition, location) {
-  const search = condition + " weather " + location;
+function getGif(condition) {
+  const search = condition + " weather";
   console.log(search);
   fetch(
     `https://api.giphy.com/v1/gifs/translate?api_key=N1RPR7J6evFACulCbSeeV87rb4RAwfuJ&s=${search}`,
