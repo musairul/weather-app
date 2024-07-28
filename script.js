@@ -16,12 +16,12 @@ function convertTemps() {
   if (celcius) {
     const f = (parseFloat(temp.textContent) * 9) / 5 + 32;
     celcius = false;
-    temp.textContent = f + " F";
+    temp.textContent = f.toFixed(1) + " F";
     switchButton.textContent = "F->C";
   } else {
     const c = ((parseFloat(temp.textContent) - 32) * 5) / 9;
     celcius = true;
-    temp.textContent = c + " C";
+    temp.textContent = c.toFixed(1) + " C";
     switchButton.textContent = "C->F";
   }
 }
